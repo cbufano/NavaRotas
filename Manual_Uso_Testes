@@ -1,0 +1,138 @@
+#Manual de Uso e Testes
+
+## Como Usar o Sistema
+
+### **1. Iniciando a Aplicação**
+
+1. Certifique-se de que você tem o [.NET SDK](https://dotnet.microsoft.com/download) instalado (versão 6.0 ou superior).
+2. Abra o terminal na raiz do projeto.
+3. Compile o projeto principal:
+   ```bash
+   dotnet build
+   ```
+4. Execute o programa:
+   ```bash
+   dotnet run --project RotaViagem
+   ```
+
+---
+
+### **2. Menu Principal**
+
+Ao iniciar o programa, você verá o seguinte menu interativo:
+
+```plaintext
+========= Menu Principal =========
+1. Adicionar uma nova rota
+2. Encontrar a rota mais barata
+3. Sair
+==================================
+Escolha uma opção:
+```
+
+#### **Opção 1: Adicionar uma Nova Rota**
+- Você será solicitado a informar:
+  - **Origem** (exemplo: GRU)
+  - **Destino** (exemplo: CDG)
+  - **Custo** (um número inteiro positivo representando o custo da rota)
+
+**Exemplo de entrada:**
+```plaintext
+Informe a origem: GRU
+Informe o destino: CDG
+Informe o custo: 75
+```
+
+**Saída esperada:**
+```plaintext
+Rota adicionada: GRU -> CDG com custo $75
+```
+
+#### **Opção 2: Encontrar a Rota Mais Barata**
+- Você será solicitado a informar:
+  - **Origem** (exemplo: GRU)
+  - **Destino** (exemplo: CDG)
+
+O programa calculará o caminho mais barato usando as rotas disponíveis.
+
+**Exemplo de entrada:**
+```plaintext
+Informe a origem: GRU
+Informe o destino: CDG
+```
+
+**Saída esperada:**
+```plaintext
+Melhor Rota: GRU - ORL - CDG com custo de $61
+```
+
+Se não houver rota disponível, você verá:
+```plaintext
+Nenhuma rota encontrada entre os pontos fornecidos.
+```
+
+#### **Opção 3: Sair**
+- Encerra o programa com uma mensagem de despedida.
+
+**Saída esperada:**
+```plaintext
+Obrigado por usar o sistema de rotas. Até mais!
+```
+
+---
+
+## Como Fazer os Testes
+
+### **1. Criando o Ambiente de Testes**
+
+1. Certifique-se de que o projeto de testes foi criado e está configurado corretamente.
+2. Navegue até o diretório raiz do projeto.
+3. Compile os testes para verificar se estão corretos:
+   ```bash
+   dotnet build
+   ```
+4. Execute os testes com o seguinte comando:
+   ```bash
+   dotnet test
+   ```
+
+---
+
+### **2. Estrutura dos Testes**
+
+Os testes foram criados para verificar as seguintes funcionalidades:
+
+#### **Testes de Adicionar Rotas**
+- Verifica se as rotas são adicionadas corretamente ao grafo.
+
+#### **Testes de Busca da Rota Mais Barata**
+- Verifica se o caminho mais barato é calculado corretamente entre dois pontos.
+- Verifica o comportamento quando não há rota disponível.
+
+#### **Testes de Persistência**
+- Garante que as rotas são salvas e carregadas corretamente do arquivo de persistência.
+
+---
+
+### **3. Saída Esperada dos Testes**
+
+Ao rodar o comando `dotnet test`, você verá algo como:
+
+```plaintext
+Passed!  -  All tests passed
+
+Total tests: 3
+Passed: 3
+Failed: 0
+```
+
+Se algum teste falhar, o terminal exibirá detalhes sobre o teste que falhou e a razão do erro.
+
+---
+
+## Considerações Finais
+
+- Use o menu principal para adicionar novas rotas ou buscar o caminho mais barato de forma interativa.
+- Antes de qualquer execução, garanta que o arquivo `routes.txt` está no diretório correto para salvar e carregar as rotas.
+- Utilize os testes para validar qualquer mudança ou nova funcionalidade adicionada ao sistema.
+
