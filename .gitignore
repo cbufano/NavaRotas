@@ -1,52 +1,57 @@
-# Prerequisites
-*.d
+# Ignore arquivos de compilação
+bin/
+obj/
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Arquivos de log
+*.log
 
-# Linker output
+# Arquivos do Visual Studio Code
+.vscode/
+
+# Arquivos do Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Arquivos de configuração locais
+*.csproj.user
+*.csproj.DotSettings.user
+*.dbmdl
+*.opendb
+*.pfx
+*.publishsettings
+
+# Arquivos de cache e build
+*.pidb
+*.suo
+*.unsuccessfulbuild
+*.buildlog
 *.ilk
-*.map
-*.exp
+*.meta
+*.obj
+*.cache
+*.csproj.nuget.g.targets
+*.csproj.nuget.g.props
 
-# Precompiled Headers
-*.gch
-*.pch
+# Arquivos gerados pelo NuGet
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# Arquivos gerados pelo Rider
+.idea/
+*.sln.iml
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Outros
+*.tmp
+*.temp
+*.bak
+*.swp
+*.orig
+*.VSCodeCounter
+**/.DS_Store
