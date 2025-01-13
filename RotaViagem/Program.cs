@@ -1,11 +1,6 @@
-﻿
-using RotaViagem.Models;
+﻿using RotaViagem.Models;
 using RotaViagem.Persistence;
 using RotaViagem.Services;
-
-
-using System;
-using System.Collections.Generic;
 
 class Program
 {
@@ -16,18 +11,16 @@ class Program
     var graph = new Graph();
     var routeService = new RouteService(graph);
 
-    // Carregar rotas iniciais
-    Console.WriteLine("Carregando rotas salvas...");
+    // Carregar rotas salvas
     var routes = persistence.LoadRoutes();
     foreach (var route in routes)
     {
       routeService.AddRoute(route.Origin, route.Destination, route.Cost);
     }
-    Console.WriteLine($"Rotas carregadas: {routes.Count}\n");
 
+    // Loop principal do menu
     while (true)
     {
-      // Exibir menu principal
       Console.WriteLine("========= Menu Principal =========");
       Console.WriteLine("1. Adicionar uma nova rota");
       Console.WriteLine("2. Encontrar a rota mais barata");
@@ -39,11 +32,11 @@ class Program
       switch (choice)
       {
         case "1":
-          AddRoute(routeService, persistence);
+          HandleAddRoute(routeService, persistence);
           break;
 
         case "2":
-          FindCheapestRoute(routeService);
+          HandleFindCheapestRoute(routeService);
           break;
 
         case "3":
@@ -58,47 +51,46 @@ class Program
   }
 
   /// <summary>
-  /// Permite ao usuário adicionar uma nova rota.
+  /// Lida com a funcionalidade de adicionar uma nova rota.
   /// </summary>
-  static void AddRoute(RouteService routeService, FilePersistence persistence)
+  static void HandleAddRoute(RouteService routeService, FilePersistence persistence)
   {
     Console.WriteLine("\n=== Adicionar uma Nova Rota ===");
-    Console.Write("Informe a origem: ");
-    var origin = Console.ReadLine();
 
-    Console.Write("Informe o destino: ");
-    var destination = Console.ReadLine();
+    // Solicita origem e destino com a opção de cancelar.
+    var origin = GetValidatedInput("Informe a origem (ou digite 'sair' para cancelar): ");
+    if (origin == null) return;
 
-    int cost;
-    while (true)
-    {
-      Console.Write("Informe o custo (número inteiro): ");
-      var costInput = Console.ReadLine();
-      if (int.TryParse(costInput, out cost) && cost > 0)
-        break;
+    var destination = GetValidatedInput("Informe o destino (ou digite 'sair' para cancelar): ");
+    if (destination == null) return;
 
-      Console.WriteLine("Entrada inválida. O custo deve ser um número inteiro positivo.");
-    }
+    // Solicita e valida o custo
+    var cost = GetValidatedCost();
+    if (cost == null) return;
 
-    routeService.AddRoute(origin, destination, cost);
-    persistence.SaveRoute(new Route(origin, destination, cost));
+    // Adiciona a rota e salva na persistência
+    routeService.AddRoute(origin.ToUpper(), destination.ToUpper(), cost.Value);
+    persistence.SaveRoute(new Route(origin, destination, cost.Value));
 
     Console.WriteLine($"Rota adicionada: {origin} -> {destination} com custo ${cost}\n");
   }
 
   /// <summary>
-  /// Permite ao usuário encontrar a rota mais barata entre dois pontos.
+  /// Lida com a funcionalidade de encontrar a rota mais barata.
   /// </summary>
-  static void FindCheapestRoute(RouteService routeService)
+  static void HandleFindCheapestRoute(RouteService routeService)
   {
     Console.WriteLine("\n=== Encontrar a Rota Mais Barata ===");
-    Console.Write("Informe a origem: ");
-    var origin = Console.ReadLine();
 
-    Console.Write("Informe o destino: ");
-    var destination = Console.ReadLine();
+    // Solicita origem e destino com a opção de cancelar.
+    var origin = GetValidatedInput("Informe a origem (ou digite 'sair' para cancelar): ");
+    if (origin == null) return;
 
-    var (path, cost) = routeService.GetCheapestRoute(origin, destination);
+    var destination = GetValidatedInput("Informe o destino (ou digite 'sair' para cancelar): ");
+    if (destination == null) return;
+
+    // Busca e exibe a melhor rota
+    var (path, cost) = routeService.GetCheapestRoute(origin.ToUpper(), destination.ToUpper());
 
     if (path.Count > 0)
     {
@@ -107,6 +99,52 @@ class Program
     else
     {
       Console.WriteLine("\nNenhuma rota encontrada entre os pontos fornecidos.\n");
+    }
+  }
+
+  /// <summary>
+  /// Solicita uma entrada do usuário com validação e opção de cancelar.
+  /// </summary>
+  static string? GetValidatedInput(string prompt)
+  {
+    while (true)
+    {
+      Console.Write(prompt);
+      var input = Console.ReadLine();
+
+      if (input?.ToLower() == "sair")
+      {
+        Console.WriteLine("Operação cancelada.\n");
+        return null;
+      }
+
+      if (!string.IsNullOrWhiteSpace(input))
+        return input;
+
+      Console.WriteLine("Entrada inválida. Por favor, tente novamente.");
+    }
+  }
+
+  /// <summary>
+  /// Solicita um custo válido ao usuário com a opção de cancelar.
+  /// </summary>
+  static int? GetValidatedCost()
+  {
+    while (true)
+    {
+      Console.Write("Informe o custo (ou digite 'sair' para cancelar): ");
+      var input = Console.ReadLine();
+
+      if (input?.ToLower() == "sair")
+      {
+        Console.WriteLine("Operação cancelada.\n");
+        return null;
+      }
+
+      if (int.TryParse(input, out var cost) && cost > 0)
+        return cost;
+
+      Console.WriteLine("Entrada inválida. O custo deve ser um número inteiro positivo.");
     }
   }
 }
