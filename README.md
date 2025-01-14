@@ -6,7 +6,7 @@ Teste de conhecimento em C#
 ## Como Executar a Aplicação
 
 ### Pré-requisitos
-- Instale o [.NET SDK](https://dotnet.microsoft.com/download) (versão 6.0 ou superior).
+- Instale o [.NET SDK](https://dotnet.microsoft.com/download) (versão 8.0 ou superior).
 - Um editor de código, como [Visual Studio Code](https://code.visualstudio.com/).
 
 ### Passos para Executar
